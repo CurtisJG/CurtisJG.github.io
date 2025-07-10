@@ -5,8 +5,11 @@ const questions = [
   { question: "Binary of 2?", answer: "10", codeDigit: "9" },
 ];
 
+// Change this to the correct code combination (use digits above)
+const correctCode = "9317";
+
 let current = 0;
-let collectedCode = "";
+let collectedDigits = [];
 
 const input = document.getElementById('input');
 const output = document.getElementById('output');
@@ -20,7 +23,7 @@ function printToTerminal(text) {
 }
 
 function updateCodeDisplay() {
-  codeDisplay.textContent = `Vault Code: ${collectedCode.padEnd(questions.length, "_")}`;
+  codeDisplay.textContent = `Vault Digits: ${collectedDigits.join(" ")}`;
 }
 
 function askQuestion() {
@@ -33,36 +36,50 @@ input.addEventListener('keydown', function (e) {
     printToTerminal("> " + input.value);
     input.value = '';
 
-    if (userInput === questions[current].answer) {
-      const digit = questions[current].codeDigit;
-      collectedCode += digit;
-      printToTerminal(`✔ Correct. Code digit acquired: ${digit}`);
-      updateCodeDisplay();
-      current++;
-      if (current < questions.length) {
-        askQuestion();
+    if (current < questions.length) {
+      if (userInput === questions[current].answer) {
+        const digit = questions[current].codeDigit;
+        collectedDigits.push(digit);
+        printToTerminal(`✔ Correct. Digit acquired: ${digit}`);
+        current++;
+        updateCodeDisplay();
+
+        if (current < questions.length) {
+          askQuestion();
+        } else {
+          promptForCode();
+        }
       } else {
-        printToTerminal("🔓 Vault code complete...");
-        triggerVaultOpening();
+        printToTerminal("✖ Incorrect. Try again.");
       }
     } else {
-      printToTerminal("✖ Incorrect. Try again.");
+      // At vault stage
+      if (userInput === correctCode) {
+        printToTerminal("🔓 Correct code. Vault unlocking...");
+        triggerVaultOpening();
+      } else {
+        printToTerminal("✖ Wrong code. The vault remains sealed.");
+      }
     }
   }
 });
 
+function promptForCode() {
+  printToTerminal("🔢 All digits collected.");
+  printToTerminal(`You have the digits: ${collectedDigits.join(" ")}`);
+  printToTerminal("Enter the correct 4-digit code to open the vault:");
+}
+
 function triggerVaultOpening() {
   input.disabled = true;
-  printToTerminal("🚨 Hacking the vault...");
-
   setTimeout(() => {
     document.getElementById("terminal").innerHTML = `
       <img src="vault.gif" alt="Vault opening animation" style="max-width: 100%; display: block; margin: 0 auto;" />
       <h2 style="color: #0f0; text-align: center;">
-        ACCESS GRANTED: CODE ${collectedCode}
+        KK is pleased.
       </h2>
     `;
-  }, 1500);
+  }, 1000);
 }
 
 updateCodeDisplay();
