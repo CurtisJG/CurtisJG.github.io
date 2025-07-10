@@ -76,7 +76,7 @@ function triggerCaught() {
   input.disabled = true;
   setTimeout(() => {
     document.getElementById("terminal").innerHTML = `
-      <img src="caught.png" alt="Caught" style="max-width: 100%; display: block; margin: 0 auto;" />
+      <img src="caught.png" alt="Caught" style="max-width: 75%; display: block; margin: 0 auto;" />
       <h2 style="color: red; text-align: center;">You were caught! Refresh to try again.</h2>
       <div style="text-align: center; margin-top: 20px;">
         <button onclick="location.reload()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Restart</button>
