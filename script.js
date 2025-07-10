@@ -57,7 +57,6 @@ function printToTerminal(text) {
 
 function updateCodeDisplay() {
   const known = collectedDigits.map(d => d ?? "_").join(" ");
-  codeDisplay.textContent = `Vault Digits (unordered): ${scrambledDigits.join(" ")}`;
   printToTerminal(`Collected: ${known}`);
 }
 
@@ -66,8 +65,7 @@ function askQuestion() {
     printToTerminal(questions[current].question);
   } else {
     printToTerminal("🔐 All digits collected.");
-    printToTerminal(`You have the digits (unordered): ${scrambledDigits.join(" ")}`);
-    printToTerminal("Enter the correct 4-digit code to open the vault:");
+    printToTerminal("You have the digits. Enter the correct 4-digit code to open the vault:");
   }
 }
 
