@@ -16,17 +16,33 @@ const introduction = [
 const digits = ["8", "3", "2", "6"];
 const questions = [
   {
-    question: `\n## Puzzle 1:\nThe initial access riddle\nI am a gate that blocks the way,\nKeeping intruders out night and day.\nIn networks, I’m a name you’ll know.\nCount my letters to get the first digit of the vault’s code.\nType your answer to the riddle (e.g., a network device name)`,
-    answer: "firewall",
+    question: `\n## Puzzle 1:
+The initial access riddle
+I am a gate that blocks the way,
+Keeping intruders out night and day.
+In networks, I’m a name you’ll know.
+Count my letters to get the first digit of the vault’s code.
+Type your answer to the riddle (e.g., a network device name)",
     digitIndex: 0
   },
   {
-    question: `\n## Puzzle 2: Welcome to the real AIT\n\nYou’ve accessed a top-secret Teams chat.\nDo the following:\n1. Add words in Andrew’s last msg on July 4 + Kerem’s second last msg on June 27.\n2. Subtract from Connor’s last msg on June 24.\n\nWhat’s the result? (Enter the digit only)`,
-    answer: "3",
+    question: `\n## Puzzle 2: Welcome to the real AIT
+You’ve accessed a top-secret Teams chat.
+Do the following:
+1. Add words in Andrew’s last msg on July 4
+2. Add Kerem’s second last msg on June 27
+3. Subtract from Connor’s last msg on June 24
+What’s the result? (Enter the digit only)",
     digitIndex: 1
   },
   {
-    question: `\n## Puzzle 3: The Hacker’s Message\n\n> You have 4 bytes of data.\n> How many bits is that?\n> Divide by bits in a nibble.\n> Add 12. Subtract 10.\n\nWhat’s the result? (First digit of the result)`,
+    question: `\n## Puzzle 3: The Hacker’s Message
+> You have 4 bytes of data.
+> How many bits is that?
+> Divide by bits in a nibble.
+> Add 12.
+> Subtract 10.
+What’s the result? (First digit of the result). Subtract 10.\n\nWhat’s the result? (First digit of the result)`,
     answer: "2",
     digitIndex: 2
   },
@@ -53,7 +69,7 @@ function printToTerminal(text) {
 }
 
 function updateCodeDisplay() {
-  const known = collectedDigits.map(d => d ?? "_").join(" ");
+  const known = collectedDigits.map(d => d === null ? "_" : d).join(" ");
   printToTerminal(`Collected: ${known}`);
 }
 
@@ -112,5 +128,4 @@ function triggerVaultOpening() {
   }, 1500);
 }
 
-// Start
 introduction.forEach(line => printToTerminal(line));
