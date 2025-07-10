@@ -4,7 +4,7 @@ const introduction = [
   "Operation Kirby Enterprises",
   "Team, listen up. This is your moment. Kirby Enterprises, the shadowy and evil corporate giant, guards a vault holding one million pounds.",
   "Your mission is to break through their defences and crack the four-digit code that will unlock that vault.",
-  "Your squad is Ash, Andrew, Connor, Curtis, Emily and Kerem - the best hackers this side of the darknet.",
+  "Your squad is Ash, Andrew, Connor, Emily and Kerem - the best hackers this side of the darknet.",
   "Every puzzle you solve brings you one step closer to the jackpot. But beware - Kirby Enterprises’ defences are tough.",
   "The company’s ruthless Chief Financial Officer, Sterling Cashmore, is a master manipulator ready to block your every move.",
   "And the company’s sinister CEO Elizabeth watches from the shadows, ready to strike.",
@@ -134,8 +134,35 @@ function triggerVaultOpening() {
   setTimeout(() => {
     document.getElementById("terminal").innerHTML = `
       <img src="vault.gif" alt="Vault opening animation" style="max-width: 100%; display: block; margin: 0 auto;" />
-      <h2 style="color: #0f0; text-align: center;">KK is pleased.</h2>
+      <h2 style="color: #0f0; text-align: center;">Vault unlocked...</h2>
+      <div id="final-stage" style="margin-top: 20px; text-align: left;"></div>
+      <div id="final-input" style="margin-top: 10px;">
+        <span>&gt;</span>
+        <input type="text" id="finalAnswer" autocomplete="off" autofocus style="background:black; color:#0f0; font-family:monospace; border:none; font-size:1em;" />
+      </div>
     `;
+
+    setTimeout(() => {
+      const finalBox = document.getElementById("final-stage");
+      finalBox.innerText = `\n## Puzzle 5: Internal Escalation\nVault logs reveal an anomaly in the tasking system:\n\n> Task-1918: Assigned to ██████\n> Status: Completed before assignment timestamp\n\nA mysterious force in the system.`;
+
+      document.getElementById("finalAnswer").addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          const response = e.target.value.trim().toLowerCase();
+          if (response === "kk") {
+            document.getElementById("terminal").innerHTML = `
+              <img src="congrats.png" alt="Aferin" style="max-width: 45%; display: block; margin: 0 auto;" />
+              <h2 style="color: #0f0; text-align: center; margin-top: 40px;">KK is pleased.</h2>
+            `;
+          } else {
+            document.getElementById("terminal").innerHTML = `
+              <h2 style="color: yellow; text-align: center; margin-top: 40px;">Congratulations on unlocking the vault...</h2>
+              <h2 style="color: red; text-align: center;">...but KK is not happy.</h2>
+            `;
+          }
+        }
+      });
+    }, 1000);
   }, 1500);
 }
 
