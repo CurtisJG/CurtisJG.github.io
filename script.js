@@ -47,9 +47,12 @@ const output = document.getElementById("output");
 const codeDisplay = document.getElementById("code");
 
 function printToTerminal(text) {
-  const line = document.createElement("div");
-  line.textContent = text;
-  output.appendChild(line);
+  const lines = text.split('\n');
+  lines.forEach(lineText => {
+    const line = document.createElement("div");
+    line.textContent = lineText;
+    output.appendChild(line);
+  });
   output.scrollTop = output.scrollHeight;
 }
 
@@ -75,6 +78,9 @@ function triggerCaught() {
     document.getElementById("terminal").innerHTML = `
       <img src="caught.jpeg" alt="Caught" style="max-width: 100%; display: block; margin: 0 auto;" />
       <h2 style="color: red; text-align: center;">You were caught! Refresh to try again.</h2>
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="location.reload()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Restart</button>
+      </div>
     `;
   }, 1000);
 }

@@ -43,3 +43,8 @@ input#input {
   flex: 1;
   outline: none;
 }
+
+#terminal {
+  overflow-y: auto;
+  position: relative;
+}
