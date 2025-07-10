@@ -16,33 +16,17 @@ const introduction = [
 const digits = ["8", "3", "2", "6"];
 const questions = [
   {
-    question: `\n## Puzzle 1:
-The initial access riddle
-I am a gate that blocks the way,
-Keeping intruders out night and day.
-In networks, I’m a name you’ll know.
-Count my letters to get the first digit of the vault’s code.
-Type your answer to the riddle (e.g., a network device name)",
+    question: `\n## Puzzle 1:\nThe initial access riddle\nI am a gate that blocks the way,\nKeeping intruders out night and day.\nIn networks, I’m a name you’ll know.\nCount my letters to get the first digit of the vault’s code.\nType your answer to the riddle (e.g., a network device name)`,
+    answer: "firewall",
     digitIndex: 0
   },
   {
-    question: `\n## Puzzle 2: Welcome to the real AIT
-You’ve accessed a top-secret Teams chat.
-Do the following:
-1. Add words in Andrew’s last msg on July 4
-2. Add Kerem’s second last msg on June 27
-3. Subtract from Connor’s last msg on June 24
-What’s the result? (Enter the digit only)",
+    question: `\n## Puzzle 2: Welcome to the real AIT\nYou’ve accessed a top-secret Teams chat.\nDo the following:\n1. Add words in Andrew’s last msg on July 4\n2. Add Kerem’s second last msg on June 27\n3. Subtract from Connor’s last msg on June 24\nWhat’s the result? (Enter the digit only)`,
+    answer: "3",
     digitIndex: 1
   },
   {
-    question: `\n## Puzzle 3: The Hacker’s Message
-> You have 4 bytes of data.
-> How many bits is that?
-> Divide by bits in a nibble.
-> Add 12.
-> Subtract 10.
-What’s the result? (First digit of the result). Subtract 10.\n\nWhat’s the result? (First digit of the result)`,
+    question: `\n## Puzzle 3: The Hacker’s Message\n> You have 4 bytes of data.\n> How many bits is that?\n> Divide by bits in a nibble.\n> Add 12.\n> Subtract 10.\nWhat’s the result? (First digit of the result)`,
     answer: "2",
     digitIndex: 2
   },
@@ -56,6 +40,7 @@ What’s the result? (First digit of the result). Subtract 10.\n\nWhat’s the r
 let current = 0;
 let inputLocked = false;
 let introComplete = false;
+let alarms = 0;
 const collectedDigits = [null, null, null, null];
 const input = document.getElementById("input");
 const output = document.getElementById("output");
@@ -71,6 +56,7 @@ function printToTerminal(text) {
 function updateCodeDisplay() {
   const known = collectedDigits.map(d => d === null ? "_" : d).join(" ");
   printToTerminal(`Collected: ${known}`);
+  printToTerminal(`Alarms Triggered: ${alarms} / 5`);
 }
 
 function askQuestion() {
@@ -80,6 +66,17 @@ function askQuestion() {
     printToTerminal("🔐 All digits collected.");
     printToTerminal("You have the digits. Enter the correct 4-digit code to open the vault:");
   }
+}
+
+function triggerCaught() {
+  inputLocked = true;
+  input.disabled = true;
+  setTimeout(() => {
+    document.getElementById("terminal").innerHTML = `
+      <img src="caught.jpeg" alt="Caught" style="max-width: 100%; display: block; margin: 0 auto;" />
+      <h2 style="color: red; text-align: center;">You were caught! Refresh to try again.</h2>
+    `;
+  }, 1000);
 }
 
 input.addEventListener("keydown", function (e) {
@@ -104,14 +101,22 @@ input.addEventListener("keydown", function (e) {
         updateCodeDisplay();
         askQuestion();
       } else {
+        alarms++;
         printToTerminal("✖ Incorrect. Try again.");
+        printToTerminal(`⚠️ Alarm triggered! (${alarms}/5)`);
+        updateCodeDisplay();
+        if (alarms >= 5) triggerCaught();
       }
     } else {
       if (userInput === digits.join("")) {
         printToTerminal("🔓 Vault code accepted...");
         triggerVaultOpening();
       } else {
+        alarms++;
         printToTerminal("❌ Incorrect code. Try again.");
+        printToTerminal(`⚠️ Alarm triggered! (${alarms}/5)`);
+        updateCodeDisplay();
+        if (alarms >= 5) triggerCaught();
       }
     }
   }
