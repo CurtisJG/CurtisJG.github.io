@@ -1,86 +1,117 @@
-const questions = [
-  { question: "Decrypt this: 2 + 2", answer: "4", codeDigit: "7" },
-  { question: "Spell 'hack'", answer: "hack", codeDigit: "3" },
-  { question: "Capital of France?", answer: "paris", codeDigit: "1" },
-  { question: "Binary of 2?", answer: "10", codeDigit: "9" },
+// --- script.js ---
+
+const introduction = [
+  "Operation Kirby Enterprises",
+  "Team, listen up. This is your moment. Kirby Enterprises, the shadowy and evil corporate giant, guards a vault holding one million pounds.",
+  "Your mission is to break through their defences and crack the four-digit code that will unlock that vault.",
+  "Your squad is Ash, Andrew, Connor, Curtis, Emily and Kerem - the best hackers this side of the darknet.",
+  "Every puzzle you solve brings you one step closer to the jackpot. But beware - Kirby Enterprises’ defences are tough.",
+  "The company’s ruthless Chief Financial Officer, Sterling Cashmore, is a master manipulator ready to block your every move.",
+  "And the company’s sinister CEO Elizabeth watches from the shadows, ready to strike.",
+  "Every clue you crack pulls you deeper into their web. The stakes are high, and the risks even higher.",
+  "This is your one shot - make it count."
 ];
 
-// Change this to the correct code combination (use digits above)
-const correctCode = "9317";
+const digits = ["8", "3", "2", "6"];
+const scrambledDigits = [...digits];
+
+// Shuffle digits to create a random order
+scrambledDigits.sort(() => Math.random() - 0.5);
+
+const questions = [
+  {
+    question: `\n## Puzzle 1: The initial access riddle\n\nI am a gate that blocks the way,\nKeeping intruders out night and day.\nIn networks, I’m a name you’ll know—\nCount my letters to get the first digit of the vault’s code.\n\nType your answer to the riddle (e.g., "firewall")`,
+    answer: "firewall",
+    digitIndex: 0
+  },
+  {
+    question: `\n## Puzzle 2: Welcome to the real AIT\n\nYou’ve accessed a top-secret Teams chat.\nDo the following:\n1. Add words in Andrew’s last msg on July 4 + Kerem’s second last msg on June 27.\n2. Subtract from Connor’s last msg on June 24.\n\nWhat’s the result? (Enter the digit only)`,
+    answer: "3",
+    digitIndex: 1
+  },
+  {
+    question: `\n## Puzzle 3: The Hacker’s Message\n\n> You have 4 bytes of data.\n> How many bits is that?\n> Divide by bits in a nibble.\n> Add 12. Subtract 10.\n\nWhat’s the result? (First digit of the result)`,
+    answer: "2",
+    digitIndex: 2
+  },
+  {
+    question: `\n## Puzzle 4: The CFO’s Phone Number\n\nYou’ve obtained CFO Sterling Cashmore’s number. His PA notes:\n- Mention his 'finance roundup' emails.\n- Call before noon.\n- Loves limited-edition fountain pens.\n\nWhat is the final digit of the code?`,
+    answer: "6",
+    digitIndex: 3
+  }
+];
 
 let current = 0;
-let collectedDigits = [];
-
-const input = document.getElementById('input');
-const output = document.getElementById('output');
-const codeDisplay = document.getElementById('code');
+let inputLocked = false;
+const collectedDigits = [null, null, null, null];
+const input = document.getElementById("input");
+const output = document.getElementById("output");
+const codeDisplay = document.getElementById("code");
 
 function printToTerminal(text) {
-  const line = document.createElement('div');
+  const line = document.createElement("div");
   line.textContent = text;
   output.appendChild(line);
   output.scrollTop = output.scrollHeight;
 }
 
 function updateCodeDisplay() {
-  codeDisplay.textContent = `Vault Digits: ${collectedDigits.join(" ")}`;
+  const known = collectedDigits.map(d => d ?? "_").join(" ");
+  codeDisplay.textContent = `Vault Digits (unordered): ${scrambledDigits.join(" ")}`;
+  printToTerminal(`Collected: ${known}`);
 }
 
 function askQuestion() {
-  printToTerminal(questions[current].question);
+  if (current < questions.length) {
+    printToTerminal(questions[current].question);
+  } else {
+    printToTerminal("🔐 All digits collected.");
+    printToTerminal(`You have the digits (unordered): ${scrambledDigits.join(" ")}`);
+    printToTerminal("Enter the correct 4-digit code to open the vault:");
+  }
 }
 
-input.addEventListener('keydown', function (e) {
-  if (e.key === 'Enter') {
+input.addEventListener("keydown", function (e) {
+  if (e.key === "Enter" && !inputLocked) {
     const userInput = input.value.trim().toLowerCase();
     printToTerminal("> " + input.value);
-    input.value = '';
+    input.value = "";
 
     if (current < questions.length) {
-      if (userInput === questions[current].answer) {
-        const digit = questions[current].codeDigit;
-        collectedDigits.push(digit);
-        printToTerminal(`✔ Correct. Digit acquired: ${digit}`);
+      const q = questions[current];
+      if (userInput === q.answer) {
+        collectedDigits[q.digitIndex] = digits[q.digitIndex];
+        printToTerminal(`✔ Correct. Digit ${q.digitIndex + 1} acquired.`);
         current++;
         updateCodeDisplay();
-
-        if (current < questions.length) {
-          askQuestion();
-        } else {
-          promptForCode();
-        }
+        askQuestion();
       } else {
         printToTerminal("✖ Incorrect. Try again.");
       }
     } else {
-      // At vault stage
-      if (userInput === correctCode) {
-        printToTerminal("🔓 Correct code. Vault unlocking...");
+      // Vault code entry stage
+      if (userInput === digits.join("")) {
+        printToTerminal("🔓 Vault code accepted...");
         triggerVaultOpening();
       } else {
-        printToTerminal("✖ Wrong code. The vault remains sealed.");
+        printToTerminal("❌ Incorrect code. Try again.");
       }
     }
   }
 });
 
-function promptForCode() {
-  printToTerminal("🔢 All digits collected.");
-  printToTerminal(`You have the digits: ${collectedDigits.join(" ")}`);
-  printToTerminal("Enter the correct 4-digit code to open the vault:");
-}
-
 function triggerVaultOpening() {
+  inputLocked = true;
   input.disabled = true;
   setTimeout(() => {
     document.getElementById("terminal").innerHTML = `
       <img src="vault.gif" alt="Vault opening animation" style="max-width: 100%; display: block; margin: 0 auto;" />
-      <h2 style="color: #0f0; text-align: center;">
-        KK is pleased.
-      </h2>
+      <h2 style="color: #0f0; text-align: center;">KK is pleased.</h2>
     `;
-  }, 1000);
+  }, 1500);
 }
 
+// Start
+introduction.forEach(line => printToTerminal(line));
 updateCodeDisplay();
 askQuestion();
