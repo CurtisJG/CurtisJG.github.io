@@ -9,15 +9,11 @@ const introduction = [
   "The company’s ruthless Chief Financial Officer, Sterling Cashmore, is a master manipulator ready to block your every move.",
   "And the company’s sinister CEO Elizabeth watches from the shadows, ready to strike.",
   "Every clue you crack pulls you deeper into their web. The stakes are high, and the risks even higher.",
-  "This is your one shot - make it count."
+  "This is your one shot - make it count.",
+  "\nPress ENTER to continue..."
 ];
 
 const digits = ["8", "3", "2", "6"];
-const scrambledDigits = [...digits];
-
-// Shuffle digits to create a random order
-scrambledDigits.sort(() => Math.random() - 0.5);
-
 const questions = [
   {
     question: `\n## Puzzle 1: The initial access riddle\n\nI am a gate that blocks the way,\nKeeping intruders out night and day.\nIn networks, I’m a name you’ll know—\nCount my letters to get the first digit of the vault’s code.\n\nType your answer to the riddle (e.g., "firewall")`,
@@ -43,6 +39,7 @@ const questions = [
 
 let current = 0;
 let inputLocked = false;
+let introComplete = false;
 const collectedDigits = [null, null, null, null];
 const input = document.getElementById("input");
 const output = document.getElementById("output");
@@ -75,6 +72,13 @@ input.addEventListener("keydown", function (e) {
     printToTerminal("> " + input.value);
     input.value = "";
 
+    if (!introComplete) {
+      introComplete = true;
+      updateCodeDisplay();
+      askQuestion();
+      return;
+    }
+
     if (current < questions.length) {
       const q = questions[current];
       if (userInput === q.answer) {
@@ -87,7 +91,6 @@ input.addEventListener("keydown", function (e) {
         printToTerminal("✖ Incorrect. Try again.");
       }
     } else {
-      // Vault code entry stage
       if (userInput === digits.join("")) {
         printToTerminal("🔓 Vault code accepted...");
         triggerVaultOpening();
@@ -111,5 +114,3 @@ function triggerVaultOpening() {
 
 // Start
 introduction.forEach(line => printToTerminal(line));
-updateCodeDisplay();
-askQuestion();
