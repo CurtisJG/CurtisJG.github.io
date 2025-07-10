@@ -16,7 +16,7 @@ const introduction = [
 const digits = ["8", "3", "2", "6"];
 const questions = [
   {
-    question: `\n## Puzzle 1: The initial access riddle\n\nI am a gate that blocks the way,\nKeeping intruders out night and day.\nIn networks, I’m a name you’ll know—\nCount my letters to get the first digit of the vault’s code.\n\nType your answer to the riddle (e.g., "firewall")`,
+    question: `\n## Puzzle 1:\nThe initial access riddle\nI am a gate that blocks the way,\nKeeping intruders out night and day.\nIn networks, I’m a name you’ll know.\nCount my letters to get the first digit of the vault’s code.\nType your answer to the riddle (e.g., a network device name)\n>`,
     answer: "firewall",
     digitIndex: 0
   },
