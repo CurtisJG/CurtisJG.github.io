@@ -26,7 +26,7 @@ const questions = [
     digitIndex: 1
   },
   {
-    question: `\n## Puzzle 3: The Hacker’s Message\n> You have 4 bytes of data.\n> How many bits is that?\n> Divide by bits in a nibble.\n> Add 12.\n> Subtract 10.\nWhat’s the result? (First digit of the result)`,
+    question: `\n## Puzzle 3: The Hacker’s Message\n> You have 4 bytes of data.\n> How many bits is that?\n> Divide by bits in a nibble.\n> Add 12.\nWhat’s the result? (First digit of the result)`,
     answer: "2",
     digitIndex: 2
   },
@@ -76,7 +76,7 @@ function triggerCaught() {
   input.disabled = true;
   setTimeout(() => {
     document.getElementById("terminal").innerHTML = `
-      <img src="caught.jpeg" alt="Caught" style="max-width: 100%; display: block; margin: 0 auto;" />
+      <img src="caught.png" alt="Caught" style="max-width: 100%; display: block; margin: 0 auto;" />
       <h2 style="color: red; text-align: center;">You were caught! Refresh to try again.</h2>
       <div style="text-align: center; margin-top: 20px;">
         <button onclick="location.reload()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Restart</button>
