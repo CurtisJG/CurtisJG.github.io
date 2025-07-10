@@ -53,7 +53,9 @@ function printToTerminal(text) {
     line.textContent = lineText;
     output.appendChild(line);
   });
-  output.scrollTop = output.scrollHeight;
+  requestAnimationFrame(() => {
+    output.scrollTop = output.scrollHeight;
+  });
 }
 
 function updateCodeDisplay() {
